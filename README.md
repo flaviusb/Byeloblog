@@ -10,11 +10,9 @@ Byelobog was a fakeloric Jekyll to Chernobog's Hyde in modern reinterpretations 
 
 This is a combination of simple libraries written in [Ioke](http://ioke.org) for templating and generating xhtml and css, with some good default options and templates for blogs. It also contains a script using these libraries that builds out a website based on a simple configuration file and your data.
 
-Assume that you have some content, as files in a version control system of some kind. Rather than messing the content or version history up with a whole lot of stuff specific to your current method of site generation, you can store 
-
 ##But Why?
 
-Assume that you want to blog like a hacker. This means writing posts in Vim or Emacs, thus the content must be in flat files, in some kind of source form.  Your data lives under version control somewhere, and
+Assume that you want to blog like a hacker.  This means writing posts in Vim or Emacs, in some kind of high level form, and posting using the terminal.  You also want your data to live somewhere under version control.  Flat files are one possible kind of solution to this.
 
 ##Installing
 
