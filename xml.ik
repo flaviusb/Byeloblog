@@ -1,6 +1,8 @@
 XML = Origin mimic do(
   ; namerep is used unquoted inside a doublequoted message to add in names for messages that break under shuffling rules
   namerep = method(x, y, x name = y. x)
+  uncamel = method("To work around the shuffling rules for Messages, uncamel takes a camel cased message name and converts it into a hyphen separated message name",
+    x, x name = (x name asText replace(#/([A-Z])/, "-$1") lower). x)
 
   doctype = method(type,
     case(type,
