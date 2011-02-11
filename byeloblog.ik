@@ -1,5 +1,6 @@
 #!/usr/bin/env ioke
 
+System loadPath << (System currentDirectory)
 use("xml.ik")
 use("shell.ik")
 use("genx.ik")
