@@ -2,6 +2,7 @@
 
 System loadPath << (System currentDirectory)
 use("xml.ik")
+use("css.ik")
 use("shell.ik")
 use("genx.ik")
 

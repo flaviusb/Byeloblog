@@ -1,4 +1,5 @@
 use("xml.ik")
+use("css.ik")
 
 GenX = Origin mimic do(
   baseDir = "#{System currentWorkingDirectory}/"
@@ -7,9 +8,11 @@ GenX = Origin mimic do(
     FileSystem withOpenFile(baseDir + fname, fn(out, out println(contents))))
   renderQFile = method(fname,
     XML render(XML fromQuotedFile(fname)))
-  build = method(+todo,
+  build = method("Method that renders an ik form from a file into a document. It tries to guess what kind of transform to apply based on the file extension of the file to write.", +todo,
     todo each(task,
       #[Generating "#{task key}" from "#{task value}"] println
-      writeOut(task key, XML render(XML fromQuotedFile(task value)))))
+      case(task key,
+        #/.*.css$/, writeOut(task key, CSS render(CSS fromQuotedFile(task value))),
+        else,       writeOut(task key, XML render(XML fromQuotedFile(task value))))))
 )
 
