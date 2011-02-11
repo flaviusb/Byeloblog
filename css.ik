@@ -25,26 +25,32 @@ CSS = Origin mimic do(
 
   render = method(quoted, context: CSS,
     first = true
-    uf = fn(x, ret = unless(first, ", ", "") + x. first = false. ret)
+    uf = fn(x, ret = unless(first, " ", "") + x. first = false. ret)
     quoted flatMap(msg,
       case(msg name,
         :^,                     uf(internal:createText(uncamel(msg arguments[0]))),
         :internal:createText,   uf(internal:createText(msg arguments [0])),
         :internal:createNumber, uf(internal:createNumber(msg arguments [0]) asText),
-        :{},                    proplist = msg evaluateOn(context, context)
-                                " {\n#{proplist flatMap(prop, makeprop(prop, context))}}"
-        :"",                    uf("[#{msg arguments flatMap(attr, (attr name) + (internal:createText(attr next arguments[0])))}]")
+        :"{}",                  first = true
+                                proplist = msg deepCopy
+                                proplist next = nil
+                                proplist = proplist evaluateOn(context, context)
+                                " {\n#{proplist flatMap(prop, makeprop(prop, context: context))}}",
+        :"",                    uf("[#{msg arguments flatMap(attr, (attr name) + (internal:createText(attr next arguments[0])))}]"),
         :$,                     uf("." + (msg arguments[0] name)),
         :$^,                    uf("." + internal:createText(uncamel(msg arguments[0]))),
         :?,                     uf("#" + (msg arguments[0] name)),
         :?^,                    uf("#" + internal:createText(uncamel(msg arguments[0]))),
-        else,                   uf(msg name + if(msg arguments length > 0,
+        :".",                   first = true. "\n",
+        :"|",                   ", " + render(msg arguments [0]),
+        else,                   uf((msg name asText) + if(msg arguments length > 0,
                                   "[#{msg arguments map(arg,
                                     cond(
                                       arg keyword?, (arg name asText)[0...-1]+"="+(arg next asText),
                                       arg name == :"{}", adict = arg evaluateOn(Ground, Ground). adict map(x, attr(x key, x value)) join(", "),
                                       ""
-                                    )) join(", ")}]"))
+                                    )) join(", ")}]",
+                                  ""))
       ))
   )
 
