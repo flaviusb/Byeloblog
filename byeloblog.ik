@@ -1,7 +1,5 @@
 #!/usr/bin/env ioke
 
-;System currentWorkingDirectory println
-
 use("xml.ik")
 use("shell.ik")
 use("genx.ik")
