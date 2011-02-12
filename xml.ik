@@ -15,6 +15,14 @@ XML = Origin mimic do(
     k, v,
     " #{k}=\"#{v}\"")
 
+  arg2txt = method("Coerce an argument which may be a bare string, an internal:createText, or an internal:concatenateText into a useful Text", arg,
+    case(arg name,
+      :internal:createText,       (arg arguments [0]),
+      :internal:createNumber,     (internal:createNumber(arg arguments [0]) asText),
+      :internal:concatenateText,  arg evaluateOn(XML, XML),
+      else,                       arg name asText)
+  )
+
   render = method(quoted,
     stack = []
     temp = quoted flatMap(msg,
@@ -25,7 +33,7 @@ XML = Origin mimic do(
         :".",                   if(stack length > 1, stack pop!, ""),
         else, "<"+(msg name)+(msg arguments flatMap(arg, 
           cond(
-            arg keyword?, " "+(arg name asText)[0...-1]+"="+(arg next asText),
+            arg keyword?, #[ #{arg2txt(arg)[0...-1]}="#{arg2txt(arg next)}"],
             arg name == :"{}", adict = arg evaluateOn(Ground, Ground). adict flatMap(x, attr(x key, x value)),
             ""
           )) || "") + if((msg next != nil) && ((msg next name != :".") || (stack length == 0)), stack push!("</#{msg name}>"). ">"," />"))
@@ -37,6 +45,6 @@ XML = Origin mimic do(
     filename,
     Message fromText(FileSystem readFully(filename)))    
   fromQuotedFile = method("Read a file in XML render compatible quoted form, turn it into a Message, then eval it into the final message",
-    filename,
-    Message fromText(FileSystem readFully(filename)) evaluateOn(XML, XML))
+    filename, context: XML,
+    Message fromText(FileSystem readFully(filename)) evaluateOn(context, context))
 )
