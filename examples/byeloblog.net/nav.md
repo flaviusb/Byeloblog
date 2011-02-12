@@ -1,4 +1,4 @@
-- About
+- [About](http://byeloblog.net/about "About Byeloblog")
 - Code
 - Examples
 - Docs
