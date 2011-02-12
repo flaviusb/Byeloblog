@@ -3,8 +3,8 @@ index_data = {
   nav:    GenX fromMD("index_nav.md"),
   body:   GenX fromMD("index.md")
 }
-
-GenX build(
+base = "/var/www/byeloblog.net/htdocs/"
+GenX build(base: base,
   (index_data => "index.html") => "index.ik",
   "reset.css"                  => "reset.ik",
   "style.css"                  => "style.ik")
