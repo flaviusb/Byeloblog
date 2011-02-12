@@ -27,10 +27,11 @@ XML = Origin mimic do(
     stack = []
     temp = quoted flatMap(msg,
       case(msg name,
-        :internal:createText,   internal:createText(msg arguments [0]),
-        :internal:createNumber, (internal:createNumber(msg arguments [0]) asText),
-        :"",                    render(msg arguments [0]),
-        :".",                   if(stack length > 1, stack pop!, ""),
+        :internal:createText,      internal:createText(msg arguments [0]),
+        :internal:createNumber,    (internal:createNumber(msg arguments [0]) asText),
+        :internal:concatenateText,  msg evaluateOn(XML, XML),
+        :"",                        render(msg arguments [0]),
+        :".",                       if(stack length > 1, stack pop!, ""),
         else, "<"+(msg name)+(msg arguments flatMap(arg, 
           cond(
             arg keyword?, #[ #{arg2txt(arg)[0...-1]}="#{arg2txt(arg next)}"],
