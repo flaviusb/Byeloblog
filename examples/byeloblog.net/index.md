@@ -1,1 +1,1 @@
-Byeloblog is a
+Byeloblog is a static site generator.
