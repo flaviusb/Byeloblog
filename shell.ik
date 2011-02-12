@@ -1,4 +1,5 @@
 Shell = Origin mimic with(
+  baseDir: "#{System currentWorkingDirectory}/",
   out: method(printer: fn(x, "From subshell: #{x}" println), +cmds,
     pb = java:lang:ProcessBuilder new(java:lang:String[] from(cmds))
     pb directory(java:io:File new(baseDir))
