@@ -6,8 +6,6 @@ GenX = Origin mimic do(
   writeOut = method(fname, contents,
     if(FileSystem exists?(baseDir + fname), FileSystem removeFile!(baseDir + fname))
     FileSystem withOpenFile(baseDir + fname, fn(out, out println(contents))))
-  renderQFile = method(fname,
-    XML render(XML fromQuotedFile(fname)))
   build = method("Method that renders an ik form from a file into a document. It tries to guess what kind of transform to apply based on the file extension of the file to write.", +todo,
     todo each(task,
       #[Generating "#{task key}" from "#{task value}"] println
