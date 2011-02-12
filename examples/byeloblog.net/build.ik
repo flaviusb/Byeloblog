@@ -1,8 +1,10 @@
+nav = GenX fromMD("nav.md")
 index_data = {
   header: GenX fromMD("index_header.md"),
-  nav:    GenX fromMD("index_nav.md"),
+  nav:    nav,
   body:   GenX fromMD("index.md")
 }
+  
 base = "/var/www/byeloblog.net/htdocs/"
 GenX build(base: base,
   (index_data => "index.html") => "index.ik",
