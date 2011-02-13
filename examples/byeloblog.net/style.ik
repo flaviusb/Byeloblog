@@ -8,7 +8,7 @@ $c | h1 | nav {
   ^textAlign :center, 
   display: "block", 
   ^verticalAlign :middle,
-  float: left
+  float: :left
 }
 h1 {
   ^fontFamily "Georgia, Times, sans-serif",
