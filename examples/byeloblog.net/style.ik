@@ -6,11 +6,13 @@
 ''(
 $c | h1 | nav {
   ^textAlign :center, 
-  display: "table-cell", 
-  ^verticalAlign :middle
+  display: "block", 
+  ^verticalAlign :middle,
+  float: left
 }
 h1 {
-  ^fontFamily "Georgia, Times, sans-serif"
+  ^fontFamily "Georgia, Times, sans-serif",
+  ^fontSize   "200%"
 }
 nav {
   ^fontFamily "Verdana, serif"
