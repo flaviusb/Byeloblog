@@ -11,8 +11,8 @@ html(xmlns: "http://www.w3.org/1999/xhtml", lang: "en") (head
   `style("#{`base}reset.css")
   `style("#{`base}style.css")
   link(rel: "shortcut icon", href: "#{`base}favicon.ico", type="image/x-icon")
-  `rem(''link(href: "#{`base}atom.xml", type: "application/atom+xml", rel="alternate", title: "Blog Atom Feed"))
-  body (
+  `rem(''link(href: "#{`base}atom.xml", type: "application/atom+xml", rel: "alternate", title: "Blog Atom Feed")))
+  (body
     ("#{`data[:header]}")
     (nav "#{`data[:nav]}")
-    ("#{`data[:body]}"))))
+    ("#{`data[:body]}")))
