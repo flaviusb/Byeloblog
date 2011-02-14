@@ -4,9 +4,8 @@
 ; ^ is `uncamel
 ; | is , 
 ''(
-$c | h1 | nav {
+$c | h1 {
   ^textAlign :center, 
-  ^verticalAlign :middle,
   display: :inline
 }
 h1 {
@@ -18,7 +17,7 @@ nav {
 }
 nav ul {
   ^listStyleType :none,
-  ^textAlign :left
+  ^textAlign :center
 }
 nav ul li {
   ^marginRight "20px",
