@@ -7,6 +7,7 @@
   ^verticalAlign :baseline,
   background: :transparent,
 }
+article | aside | figure | footer | header | hgroup | menu | nav | section { display: :block }
 body {
   "line-height" => 1
 }
