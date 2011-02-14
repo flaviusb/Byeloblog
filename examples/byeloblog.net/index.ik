@@ -6,7 +6,6 @@ style = dsyntax("Add style sheet link in place.",
 ''(
 `doctype("xml")
 `doctype("xhtml")
-`entity("rsquo")
 html(xmlns: "http://www.w3.org/1999/xhtml", lang: "en") (head
   (title "#{`data[:title]}")
   meta({"http-equiv" => "content-type", content: "application/xhtml+xml; charset=utf-8"})
