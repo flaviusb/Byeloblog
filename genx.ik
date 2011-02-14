@@ -20,7 +20,7 @@ GenX = Origin mimic do(
   fromMD = method("Get a markdown file, process it, and return it", filename,
     pipe = []
     frompipe = fn(x, pipe << x)
-    Shell out(printer: frompipe, "markdown", filename)
+    Shell out(printer: frompipe, "markdown", "-F", "0x4", filename)
     pipe join("\n") replaceAll(#/^"|([^\\])"/, #[$1\\"])))
 )
 

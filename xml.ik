@@ -9,11 +9,6 @@ XML = Origin mimic do(
       "xml",   '(#[<?xml version="1.0" encoding="utf-8"?>\n]),
       "xhtml", '"<!DOCTYPE html>\n"))
   ; some common entities
-  entity = method(type,
-    case(type,
-      "rsquo",   '(#[<!ENTITY rsquo   CDATA "&#8217;" -- right single quotation mark,
-                       U+2019 ISOnum -->\n])
-      ))
   comment = method(it, temp = 'internal:createText. temp << "\n<!--\n#{it}\n-->\n". temp)
   rem     = fn(it, temp = 'internal:createText. temp << "<!--#{it}-->". temp)
 
