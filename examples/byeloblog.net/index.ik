@@ -4,6 +4,7 @@ style = dsyntax("Add style sheet link in place.",
   ''(''link(rel: "stylesheet", type: "text/css", href: `location))
 )
 ''(
+`doctype("xml")
 `doctype("xhtml")
 `entity("rsquo")
 html(xmlns: "http://www.w3.org/1999/xhtml", lang: "en") (head
