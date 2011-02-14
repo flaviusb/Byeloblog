@@ -5,8 +5,8 @@
 ; | is , 
 ''(
 $c | h1 {
-  ^textAlign :center, 
-  display: :inline
+  display: :table,
+  margin: "10px auto"
 }
 h1 {
   ^fontFamily "Georgia, Times, sans-serif",
