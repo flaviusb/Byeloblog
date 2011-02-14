@@ -8,6 +8,10 @@ $c | h1 {
   display: :table,
   margin: "10px auto"
 }
+$b {
+  width: "80%",
+  margin: "10px auto"
+}
 h1 {
   ^fontFamily "Georgia, Times, sans-serif",
   ^fontSize   "200%"
@@ -15,6 +19,9 @@ h1 {
 nav {
   ^fontFamily     "Verdana, serif",
   ^marginBottom   "1.75em"
+}
+h2 {
+  ^paddingTop  "0.75em"
 }
 nav ul {
   ^listStyleType :none,
