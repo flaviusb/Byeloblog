@@ -13,7 +13,8 @@ h1 {
   ^fontSize   "200%"
 }
 nav {
-  ^fontFamily "Verdana, serif"
+  ^fontFamily     "Verdana, serif",
+  ^marginBottom   "0.75 em"
 }
 nav ul {
   ^listStyleType :none,
