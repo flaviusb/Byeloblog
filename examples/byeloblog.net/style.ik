@@ -24,7 +24,7 @@ nav ul li {
   ^marginRight "20px",
   display: :inline
 }
-nav ul li a, h1 a {
+nav ul li a | h1 a {
   ^textDecoration :none,
   color: :black
 }
