@@ -6,7 +6,6 @@
 ''(
 $c | h1 | nav {
   ^textAlign :center, 
-  display: "block", 
   ^verticalAlign :middle,
   float: :left
 }
@@ -15,16 +14,17 @@ h1 {
   ^fontSize   "200%"
 }
 nav {
-  ^fontFamily "Verdana, serif"
+  ^fontFamily "Verdana, serif",
+  clear: :right
 }
 nav ul {
-  ^listStyle :none
+  ^listStyleType :none
 }
 nav ul li {
-  ^marginRight "40px"
+  ^marginRight "20px",
+  display: :inline
 }
 nav ul li a {
-  display: :block,
   ^textDecoration :none,
   color: :black
 }
