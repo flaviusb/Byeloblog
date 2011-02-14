@@ -14,7 +14,7 @@ h1 {
 }
 nav {
   ^fontFamily     "Verdana, serif",
-  ^marginBottom   "0.75 em"
+  ^marginBottom   "0.75em"
 }
 nav ul {
   ^listStyleType :none,
