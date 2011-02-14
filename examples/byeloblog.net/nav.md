@@ -1,4 +1,4 @@
 - [About](http://byeloblog.net/about "About Byeloblog")
-- Code
-- Examples
-- Docs
+- [Source](https://github.com/flaviusb/Byeloblog/ "The Source")
+- [Examples](http://byeloblog.net/examples "A taste of what is to come")
+- [Documentation](http://byeloblog.net/documentation "Hahaha, no really.")
