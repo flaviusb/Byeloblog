@@ -7,18 +7,18 @@
 $c | h1 | nav {
   ^textAlign :center, 
   ^verticalAlign :middle,
-  float: :left
+  display: :inline
 }
 h1 {
   ^fontFamily "Georgia, Times, sans-serif",
   ^fontSize   "200%"
 }
 nav {
-  ^fontFamily "Verdana, serif",
-  clear: :right
+  ^fontFamily "Verdana, serif"
 }
 nav ul {
-  ^listStyleType :none
+  ^listStyleType :none,
+  ^textAlign :left
 }
 nav ul li {
   ^marginRight "20px",
