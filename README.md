@@ -25,7 +25,14 @@ Alternatively, download as a tarball with
 
     wget https://github.com/flaviusb/Byeloblog/tarball/master
 
-Then, extract it somewhere convenient.
+Then, extract it somewhere convenient, and add it to your path.
+
+
+Alternatively, if you are running Linux and are lazy you can cd to the Byeloblog root directory and run
+
+    sudo ./install.ik
+
+This will just create a symlink in /usr/bin pointing to byeloblog.ik.
 
 ##Use
 
