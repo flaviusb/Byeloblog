@@ -24,6 +24,9 @@ docs_data = {
   nav:    nav,
   body:   GenX fromMD("docs.md")
 }
+smap_data = {
+  urls: [ "http://byeloblog.net/", "http://byeloblog.net/about", "http://byeloblog.net/examples", "http://byeloblog.net/documentation" ]
+}
 base = "/var/www/byeloblog.net/htdocs/"
 ;base = ""
 GenX build(base: base,
@@ -31,5 +34,6 @@ GenX build(base: base,
   (about_data    => "about.html")         => "index.ik",
   (examples_data => "examples.html")      => "index.ik",
   (docs_data     => "documentation.html") => "index.ik",
+  (smap_data     => "sitemap.xml")        => "sitemap.ik",
   "reset.css"                             => "reset.ik",
   "style.css"                             => "style.ik")
