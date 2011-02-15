@@ -30,7 +30,7 @@ Then, extract it somewhere convenient, and add it to your path.
 
 Alternatively, if you are running Linux and are lazy you can cd to the Byeloblog root directory and run
 
-    sudo ./install.ik
+    sudo ./install.sh
 
 This will just create a symlink in /usr/bin pointing to byeloblog.ik.
 
