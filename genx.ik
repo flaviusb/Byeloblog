@@ -20,9 +20,10 @@ GenX = Origin mimic do(
       case(fromFile,
         #/.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedFile(task value))),
         else,       writeOut(base: base, fromFile, XML render(XML fromQuotedFile(task value, context: XML mimic with(data: context)))))))
-  sitemap = method("Generate a google sitemap.xml based on the urls in built.", base: baseDir, name: "sitemap.xml", filter: #/html/,
+  sitemap = method("Generate a google sitemap.xml based on the urls in built.", base: baseDir, name: "sitemap.xml", filter: #/({name}.*)\.html/,
     "Building sitemap: #{name}" println
-    writeOut(base: base, name, XML render(XML fromQuotedFile((System currentDirectory) + "/lib/sitemap.ik", context: XML mimic with(data: {urls: built filter(uri, uri =~ filter) map(uri, baseURI + uri)})))))
+    urls = built filter(uri, uri =~ filter) map(uri, baseURI + if((uri =~ filter), if(:name in (it names), it[:name], uri)))
+    writeOut(base: base, name, XML render(XML fromQuotedFile((System currentDirectory) + "/lib/sitemap.ik", context: XML mimic with(data: {urls: urls})))))
   fromMD = method("Get a markdown file, process it, and return it", filename,
     pipe = []
     frompipe = fn(x, pipe << x)

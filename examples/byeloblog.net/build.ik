@@ -34,4 +34,4 @@ GenX build(base: base,
   (docs_data     => "documentation.html") => "index.ik",
   "reset.css"                             => "reset.ik",
   "style.css"                             => "style.ik")
-GenX sitemap
+GenX sitemap(base: base)
