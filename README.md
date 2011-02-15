@@ -29,7 +29,7 @@ Then, extract it somewhere convenient.
 
 ##Use
 
-If [Ioke](http://ioke.org) and the byeloblog.ik script are on your path, you can simply add a conf.ik file describing your site layout to the root of a copy of your site data, and run
+If [Ioke](http://ioke.org) and the byeloblog.ik script are on your path, you can simply add a build.ik file describing your site layout to the root of a copy of your site data, and run
     byeloblog.ik
 
-
+The format of the build.ik file, and more information on usage can be found at the [examples](http://byeloblog.net/examples "Examples") or [docs](http://byeloblog.net/documentation "Documentation") pages.
