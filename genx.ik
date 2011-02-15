@@ -22,7 +22,7 @@ GenX = Origin mimic do(
         else,       writeOut(base: base, fromFile, XML render(XML fromQuotedFile(task value, context: XML mimic with(data: context)))))))
   sitemap = method("Generate a google sitemap.xml based on the urls in built.", base: baseDir, name: "sitemap.xml", filter: #/html/,
     "Building sitemap: #{name}" println
-    writeOut(base: base, name, XML render(XML fromQuotedFile((System currentDirectory) + "/lib/sitemap.ik", context: XML mimic with(data: {uris: built filter(uri, uri =~ filter) map(uri, baseURI + uri)})))))
+    writeOut(base: base, name, XML render(XML fromQuotedFile((System currentDirectory) + "/lib/sitemap.ik", context: XML mimic with(data: {urls: built filter(uri, uri =~ filter) map(uri, baseURI + uri)})))))
   fromMD = method("Get a markdown file, process it, and return it", filename,
     pipe = []
     frompipe = fn(x, pipe << x)
