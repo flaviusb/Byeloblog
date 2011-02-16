@@ -11,9 +11,10 @@ $c | h1 {
 $b {
   width: "80%",
   margin: "10px auto",
-  ^MozBorderRadius "15px",
-  ^borderRadius "15px",
-  ^backgroundColor "rgba(246,249,237, 0.5)"
+  padding: "20px",
+  "border-radius" => "15px",
+  "-moz-border-radius" => "15px",
+  "background-color" => "rgba(246,249,237, 0.5)"
 }
 h1 {
   ^fontFamily "Georgia, Times, sans-serif",
