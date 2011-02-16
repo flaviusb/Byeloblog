@@ -3,8 +3,8 @@ mkurls = method("Make list of urls from a list", urls,
   first = true
   urls each(url,
     if(first,
-      baseMsg = ''((url (loc "#{`url}"))). first = false,
-      baseMsg last -> ''((url (loc "#{`url}")))))
+      baseMsg = ''((url (loc "#{`url[:file]}") (lastmod "#{`url[:modified]}"))). first = false,
+      baseMsg last -> ''((url (loc "#{`url[:file]}") (lastmod "#{`url[:modified]}")))))
   baseMsg
 )
 ''(`doctype("xml")

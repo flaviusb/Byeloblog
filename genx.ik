@@ -16,13 +16,14 @@ GenX = Origin mimic do(
         Pair, context = task key key. fromFile = task key value,
         Text, context = "".           fromFile = task key)
       #[Generating "#{fromFile}" from "#{task value}"] println
-      built << fromFile
+      timeMod = (Shell out("stat", "-c", "%y", task value)) replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3")
+      built << { file: fromFile, modified: timeMod }
       case(fromFile,
         #/.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedFile(task value))),
         else,       writeOut(base: base, fromFile, XML render(XML fromQuotedFile(task value, context: XML mimic with(data: context)))))))
   sitemap = method("Generate a google sitemap.xml based on the urls in built.", base: baseDir, name: "sitemap.xml", filter: #/({name}.*)\.html/,
     "Building sitemap: #{name}" println
-    urls = built filter(uri, uri =~ filter) map(uri, baseURI + let(matches, (uri =~ filter), if((matches names) include?(:name), matches[:name], uri)))
+    urls = built filter(uri, uri[:file] =~ filter) map(uri, baseURI + let(matches, (uri[:file] =~ filter), if((matches names) include?(:name), matches[:name], uri)))
     writeOut(base: base, name, XML render(XML fromQuotedFile((System currentDirectory) + "/lib/sitemap.ik", context: XML mimic with(data: {urls: urls})))))
   fromMD = method("Get a markdown file, process it, and return it", filename,
     pipe = []
