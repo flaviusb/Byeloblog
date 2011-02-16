@@ -2,12 +2,12 @@ CSS = Origin mimic do(
   ; namerep is used unquoted inside a doublequoted message to add in names for messages that break under shuffling rules
   namerep = method(x, y, x name = y. x)
   uncamel = method("To work around the shuffling rules for Messages, uncamel takes a camel cased message name and converts it into a hyphen separated message name",
-    x, x name = (x name asText replace(#/([A-Z])/, "-$1") lower). x)
+    x, x name = (x name asText replaceAll(#/([A-Z])/, "-$1") lower). x)
   comment = method(it, temp = 'internal:createText. temp << "\n/*\n#{it}\n*/\n". temp)
   rem     = fn(it, temp = 'internal:createText. temp << (it replaceAll(#/(^|(\n))/, "$1//")). temp)
   cell(:^) = dsyntax("Convert camelcase name to hyphen split name in place",
     [camel]
-    camel name = (camel name asText replace(#/([A-Z])/, "-$1") lower)
+    camel name = (camel name asText replaceAll(#/([A-Z])/, "-$1") lower)
     textify = 'internal:createText
     textify << camel name asText
     if(camel next,
