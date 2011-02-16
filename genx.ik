@@ -32,7 +32,7 @@ GenX = Origin mimic do(
         Pair, fileFrom = theFile key. fileTo = theFile value,
         Text, fileFrom = theFile.     fileTo = theFile)
       "Deploying file #{fileFrom} as #{fileTo}" println
-      Shell out("cp", base + fileFrom, fileTo)))
+      Shell out("cp", fileFrom, base + fileTo)))
 
   sitemap = method("Generate a google sitemap.xml based on the urls in built.", base: baseDir, name: "sitemap.xml", filter: #/({name}.*)\.html/,
     "Building sitemap: #{name}" println
