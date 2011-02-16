@@ -34,4 +34,6 @@ GenX build(base: base,
   (docs_data     => "documentation.html") => "index.ik",
   "reset.css"                             => "reset.ik",
   "style.css"                             => "style.ik")
+GenX deployRaw(base: base,
+  "tentacle-tophat.png")
 GenX sitemap(base: base)

@@ -11,7 +11,7 @@ html(xmlns: "http://www.w3.org/1999/xhtml", lang: "en") (head
   meta(charset: "utf-8")
   `style("#{`base}reset.css")
   `style("#{`base}style.css")
-  link(rel: "shortcut icon", href: "#{`base}favicon.ico", type="image/x-icon")
+  link(rel: "shortcut icon", href: "#{`base}tentacle-tophat.png", type: "image/png")
   `rem(''link(href: "#{`base}atom.xml", type: "application/atom+xml", rel: "alternate", title: "Blog Atom Feed")))
   (body
     ("#{`data[:header]}")

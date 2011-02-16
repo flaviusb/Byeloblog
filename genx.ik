@@ -24,6 +24,16 @@ GenX = Origin mimic do(
       case(fromFile,
         #/.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedFile(task value))),
         else,       writeOut(base: base, fromFile, XML render(XML fromQuotedFile(task value, context: XML mimic with(data: context)))))))
+
+  deployRaw = method("Copy a file from the document directory to the deploy directory", +todo, base: baseName,
+    todo each(theFile,
+      fileFrom = "". fileTo = ""
+      case(theFile,
+        Pair, fileFrom = theFile key. fileTo = theFile value,
+        Text, fileFrom = theFile.     fileTo = theFile)
+      "Deploying file #{fileFrom} as #{fileTo}" println
+      Shell out("cp", base + fileFrom, fileTo)))
+
   sitemap = method("Generate a google sitemap.xml based on the urls in built.", base: baseDir, name: "sitemap.xml", filter: #/({name}.*)\.html/,
     "Building sitemap: #{name}" println
     urls = built filter(uri, uri[:file] =~ filter) map(uri, {file: baseURI + let(matches, (uri[:file] =~ filter), if((matches names) include?(:name), matches[:name], uri)), modified: uri[:modified]})
