@@ -16,7 +16,10 @@ GenX = Origin mimic do(
         Pair, context = task key key. fromFile = task key value,
         Text, context = "".           fromFile = task key)
       #[Generating "#{fromFile}" from "#{task value}"] println
-      timeMod = (Shell out("stat", "-c", "%y", task value)) replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3")
+      time = ""
+      mktime = fn(x, time = x)
+      Shell out(printer: mktime, "stat", "-c", "%y", task value)
+      timeMod = time replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3")
       built << { file: fromFile, modified: timeMod }
       case(fromFile,
         #/.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedFile(task value))),
