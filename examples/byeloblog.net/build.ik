@@ -4,7 +4,7 @@ fileModified = method("Shell out to get file modification timestamp.", fileName,
   time = ""
   mktime = fn(x, time = x)
   Shell out(printer: mktime, "stat", "-c", "%y", fileName)
-  time replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3")
+  time replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3") replace(#/([0-9]{2})([0-9]{2})$/, "$1:$2")
 )
 index_data = {
   title:    "Byeloblog",
