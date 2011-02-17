@@ -19,7 +19,7 @@ GenX = Origin mimic do(
       time = ""
       mktime = fn(x, time = x)
       timeMod = ""
-      unless(context cell?(:modified),
+      unless(context[:modified],
         Shell out(printer: mktime, "stat", "-c", "%y", task value)
         timeMod = time replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3"),
         timeMod = context modified)
