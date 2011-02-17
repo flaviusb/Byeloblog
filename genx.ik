@@ -22,7 +22,7 @@ GenX = Origin mimic do(
       unless(context[:modified],
         Shell out(printer: mktime, "stat", "-c", "%y", task value)
         timeMod = time replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3"),
-        timeMod = context modified)
+        timeMod = context[:modified])
       built << { file: fromFile, modified: timeMod }
       case(fromFile,
         #/.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedFile(task value))),
