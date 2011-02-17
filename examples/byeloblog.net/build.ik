@@ -1,16 +1,24 @@
 nav    = GenX fromMD("nav.md")
 header = GenX fromMD("header.md")
+fileModified = method("Shell out to get file modification timestamp.", fileName,
+  time = ""
+  mktime = fn(x, time = x)
+  Shell out(printer: mktime, "stat", "-c", "%y", fileName)
+  time replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3")
+)
 index_data = {
-  title:  "Byeloblog",
-  header: header,
-  nav:    nav,
-  body:   GenX fromMD("index.md")
+  title:    "Byeloblog",
+  header:   header,
+  nav:      nav,
+  body:     GenX fromMD("index.md"),
+  modified: fileModified("index.md")
 }
 about_data = {
-  title:  "About Byeloblog",
-  header: header,
-  nav:    nav,
-  body:   GenX fromMD("about.md")
+  title:    "About Byeloblog",
+  header:   header,
+  nav:      nav,
+  body:     GenX fromMD("about.md"),
+  modified: fileModified("about.md")
 }
 examples_data = {
   title:  "Examples of a fictional sibling of an elder god...",
@@ -19,10 +27,11 @@ examples_data = {
   body:   ""
 }
 docs_data = {
-  title:  "Documentation",
-  header: header,
-  nav:    nav,
-  body:   GenX fromMD("docs.md")
+  title:    "Documentation",
+  header:   header,
+  nav:      nav,
+  body:     GenX fromMD("docs.md"),
+  modified: fileModified("docs.md")  
 }
 base = "/var/www/byeloblog.net/htdocs/"
 ;base = ""
