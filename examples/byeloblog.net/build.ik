@@ -20,6 +20,10 @@ about_data = {
   body:     GenX fromMD("about.md"),
   modified: fileModified("about.md")
 }
+; This context variable stops unneccesary shelling out when we don't care about a files modification date
+nomod = {
+  modified: ""
+}
 examples_data = {
   title:  "Examples of a fictional sibling of an elder god...",
   header: header,
@@ -41,8 +45,8 @@ GenX build(base: base,
   (about_data    => "about.html")         => "index.ik",
   (examples_data => "examples.html")      => "index.ik",
   (docs_data     => "documentation.html") => "index.ik",
-  "reset.css"                             => "reset.ik",
-  "style.css"                             => "style.ik")
+  (nomod         => "reset.css")          => "reset.ik",
+  (nomod         => "style.css")          => "style.ik")
 GenX deployRaw(base: base,
   "tentacle-tophat.png")
 GenX sitemap(base: base)
