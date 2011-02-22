@@ -61,11 +61,11 @@ JSONParser = Parser mimic do(
         Pair,  (struct key => converter(newdata)),
         List,  struct + [converter(newdata)],
         else,  converter(newdata)))))
-  escapes = lit(#/\\("|(\\)|(\/)|b|f|n|r|t|[0-9]{4})/)
-  escaped = star(alt(lit(#/[^\/"]/), escapes))
+  escapes = lit(#/^\\("|(\\)|(\/)|b|f|n|r|t|[0-9]{4})/)
+  escaped = star(alt(lit(#/^[^\\"]/), escapes))
   string  = seq(lit(#["]), wraplit(escaped, fn(str, str)), lit(#["]))
-  number  = wraplit(lit(#/[-+]?[0-9]+(\.[0-9]*)?/), fn(str, str toDecimal))
-  ws      = lit(#/[\w]*/)
+  number  = wraplit(lit(#/^[-+]?[0-9]+(\.[0-9]*)?/), fn(str, str toDecimal))
+  ws      = lit(#/^[\w]*/)
   jlist   = seq(wrapped(lit("["), fn(x, y, "[" println. [])), ws, opt(seq(alt(number, string), star(seq(ws, lit(","), ws, alt(number, string))))), ws, lit("]")))
 ;  expression = list or dict or literal
 ;  dict = ...
