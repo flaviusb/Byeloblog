@@ -42,7 +42,7 @@ Parser = Origin mimic do(
       acc))
   wrapped = method("Add a behavior around a parser", parser, mod,
     return fn(pos, struct,
-      if(parser(pos, struct),      
+      if(parser(pos, struct),
         it[1] = mod(it[1], data[pos...it[0]])
         it, nil)))
   lit = method("Match a Text or Regexp.", alit,
@@ -65,8 +65,9 @@ JSONParser = Parser mimic do(
   escaped = star(alt(lit(#/^[^\\"]/), escapes))
   string  = seq(lit(#["]), wraplit(escaped, fn(str, str)), lit(#["]))
   number  = wraplit(lit(#/^[-+]?[0-9]+(\.[0-9]*)?/), fn(str, str toDecimal))
-  ws      = lit(#/^[\W]*/)
-  jlist   = seq(wrapped(lit("["), fn(x, y, "[" println. [])), ws, opt(seq(alt(number, string), star(seq(ws, lit(","), ws, alt(number, string))))), ws, lit("]")))
+  ws      = lit(#/^[ \n]*/)
+  jlist   = seq(wrapped(lit("["), fn(x, y, [])), opt(seq(ws, alt(number, string), star(seq(ws, lit(","), ws, alt(number, string))))), ws, lit("]")))
+jj = JSONParser
 ;  expression = list or dict or literal
 ;  dict = ...
 ;
