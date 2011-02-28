@@ -39,7 +39,7 @@ GenX = Origin mimic do(
   sitemap:filter = fn(name,
     if(name =~ #/({name}.*)\.html/,
       let(matches, it,
-        if(matches include?(:name),
+        if((matches names) include?(:name),
           if(matches[:name] == "index",
             "",
             matches[:name])))))
