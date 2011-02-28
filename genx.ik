@@ -36,10 +36,16 @@ GenX = Origin mimic do(
         Text, fileFrom = theFile.     fileTo = theFile)
       "Deploying file #{fileFrom} as #{fileTo}" println
       Shell out("cp", fileFrom, base + fileTo)))
-
-  sitemap = method("Generate a google sitemap.xml based on the urls in built.", base: baseDir, name: "sitemap.xml", filter: #/({name}.*)\.html/,
+  sitemap:filter = fn(name,
+    if(name =~ #/({name}.*)\.html/,
+      let(matches, it,
+        if(matches include?(:name),
+          if(matches[:name] == "index",
+            "",
+            matches[:name])))))
+  sitemap = method("Generate a google sitemap.xml based on the urls in built.", base: baseDir, name: "sitemap.xml", filter: sitemap:filter,
     "Building sitemap: #{name}" println
-    urls = built filter(uri, uri[:file] =~ filter) map(uri, {file: baseURI + let(matches, (uri[:file] =~ filter), if((matches names) include?(:name), matches[:name], uri)), modified: uri[:modified]})
+    urls = built map(uri, if(filter(uri[:file]), {modified: uri[:modified], file: baseURI + it})) filter
     writeOut(base: base, name, XML render(XML fromQuotedFile((System currentDirectory) + "/lib/sitemap.ik", context: XML mimic with(data: {urls: urls})))))
   fromMD = method("Get a markdown file, process it, and return it", filename,
     pipe = []
