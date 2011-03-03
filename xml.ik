@@ -4,6 +4,10 @@ XML = Origin mimic do(
   uncamel = method("To work around the shuffling rules for Messages, uncamel takes a camel cased message name and converts it into a hyphen separated message name",
     x, x name = (x name asText replaceAll(#/([A-Z])/, "-$1") lower). x)
 
+  repbody = method("Replace the current cell of a message, leaving prev and next pointers intact.", src, rep,
+    src arguments = rep arguments. src name = rep name.
+    src)
+
   doctype = method(type,
     case(type,
       "xml",   '(#[<?xml version="1.0" encoding="utf-8"?>\n]),
@@ -26,19 +30,23 @@ XML = Origin mimic do(
 
   render = method(quoted,
     stack = []
+    render:tag = fn(tag,
+      "<"+(tag name)+(tag arguments flatMap(arg, 
+          cond(
+            arg keyword?,       #[ #{arg2txt(arg)[0...-1]}="#{arg2txt(arg next)}"],
+            arg name == :"{}",  adict = arg evaluateOn(XML, XML). adict flatMap(x, attr(x key, x value)),
+            ""
+          )) || "") + if((tag next != nil) && ((tag next name != :".") || (stack length == 0)), stack push!("</#{tag name}>"). ">"," />"))
+    ; first, the rewriting step
     temp = quoted flatMap(msg,
       case(msg name,
-        :internal:createText,      internal:createText(msg arguments [0]),
-        :internal:createNumber,    (internal:createNumber(msg arguments [0]) asText),
+        :internal:createText,       internal:createText(msg arguments [0]),
+        :internal:createNumber,     (internal:createNumber(msg arguments [0]) asText),
         :internal:concatenateText,  msg evaluateOn(XML, XML),
         :"",                        render(msg arguments [0]),
         :".",                       if(stack length > 1, stack pop!, ""),
-        else, "<"+(msg name)+(msg arguments flatMap(arg, 
-          cond(
-            arg keyword?, #[ #{arg2txt(arg)[0...-1]}="#{arg2txt(arg next)}"],
-            arg name == :"{}", adict = arg evaluateOn(Ground, Ground). adict flatMap(x, attr(x key, x value)),
-            ""
-          )) || "") + if((msg next != nil) && ((msg next name != :".") || (stack length == 0)), stack push!("</#{msg name}>"). ">"," />"))
+        :^,                         render:tag(repbody(msg, uncamel(msg mimic arguments [0]))),
+        else,                       render:tag(msg))
     )
     temp + (stack reverse join)
   )
