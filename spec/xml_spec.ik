@@ -25,6 +25,6 @@ describe(XML,
       '(electro
          //bass sound(gravel: "true") "wubwubwub"
          bass sound(gravel: "false")  "oontzoontzoontz")
-    )) should == #[<electro><-- <bass><sound gravel="true">wubwubwub</sound></bass> --><bass><sound gravel="false">oontzoontzoontz</sound></bass></electro>]
+    )) should == #[<electro><!-- <bass><sound gravel="true">wubwubwub</sound></bass> --><bass><sound gravel="false">oontzoontzoontz</sound></bass></electro>]
   )
 )

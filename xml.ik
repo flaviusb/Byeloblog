@@ -46,7 +46,7 @@ XML = Origin mimic do(
         :"",                        render(msg arguments [0]),
         :".",                       if(stack length > 1, stack pop!, ""),
         :^,                         render:tag(repbody(msg, uncamel(msg mimic arguments [0]))),
-        ://,                        "<-- #{render(msg arguments [0])} -->",
+        ://,                        "<!-- #{render(msg arguments [0])} -->",
         else,                       render:tag(msg))
     )
     temp + (stack reverse join)
