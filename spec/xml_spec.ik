@@ -20,4 +20,11 @@ describe(XML,
     (XML render('(weew ^(asdFr(reab: "foofoo", qw: "er")) ^fred))) should == #[<weew><asd-fr reab="foofoo" qw="er"><fred /></asd-fr></weew>]
     (XML render('(weew ^(asdFr({"r-eab" => "foofoo"}, qw: "er")) ^fRed))) should == #[<weew><asd-fr r-eab="foofoo" qw="er"><f-red /></asd-fr></weew>]
   )
+  it("should correctly handle naive xml comments",
+    (XML render(
+      '(electro
+         //bass sound(gravel: "true") "wubwubwub"
+         bass sound(gravel: "false")  "oontzoontzoontz")
+    )) should == #[<electro><-- <bass><sound gravel="true">wubwubwub</sound></bass> --><bass><sound gravel="false">oontzoontzoontz</sound></bass></electro>]
+  )
 )
