@@ -15,7 +15,7 @@ describe(XML,
     (XML render(theMessage)) should == #[<?xml version="1.0" encoding="utf-8"?>\n<foo xmlns="http://example.com/foobar">There should be text here.<bar>And also here</bar></foo>]
   )
   describe("should autoclose elements in the right places", {pending: true})
-  it("should correctly handle the rewriting step",
+  it("should correctly handle the ^ rewriting step",
     (XML render('(^(asdFr(qw: "er")) fred))) should == #[<asd-fr qw="er"><fred /></asd-fr>]
     (XML render('(weew ^(asdFr(reab: "foofoo", qw: "er")) ^fred))) should == #[<weew><asd-fr reab="foofoo" qw="er"><fred /></asd-fr></weew>]
     (XML render('(weew ^(asdFr({"r-eab" => "foofoo"}, qw: "er")) ^fRed))) should == #[<weew><asd-fr r-eab="foofoo" qw="er"><f-red /></asd-fr></weew>]
