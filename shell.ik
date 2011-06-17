@@ -14,5 +14,5 @@ Shell = Origin mimic with(
         if(it == nil, break)
         printer(internal:createText(it))
       )
-      "Exit subshell with status #{proc waitFor}" println))
+      let(res, internal:createNumber(proc waitFor), "Exit subshell with status #{res}" println. return res)))
 )
