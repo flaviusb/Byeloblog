@@ -6,7 +6,7 @@ GenX = Origin mimic do(
   baseDir = "#{System currentWorkingDirectory}/"
   writeOut = method(fname, contents, base: baseDir,
     if(FileSystem exists?(base + fname), FileSystem removeFile!(base + fname))
-    unless(FileSystem exists?(FileSystem parentOf(fname)), Shell out("mkdir", "-p", FileSystem parentOf(fname)))
+    unless(FileSystem exists?(FileSystem parentOf(base + fname)), Shell out("mkdir", "-p", FileSystem parentOf(base + fname)))
     FileSystem withOpenFile(base + fname, fn(out, out println(contents))))
   built = []
   baseURI = ""
