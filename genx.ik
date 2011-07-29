@@ -35,7 +35,7 @@ GenX = Origin mimic do(
       case(theFile,
         Pair, fileFrom = [theFile key].         fileTo = theFile value,
         Text, fileFrom = FileSystem [theFile].  if(fileFrom length != 1, fileTo = "", fileTo = theFile))
-      "Deploying file #{fileFrom flatMap(it, it + " ")}as #{if(fileTo != "", fileTo, base + fileFrom)}" println
+      "Deploying file #{fileFrom flatMap(it, it + " ")}as #{fileTo ?|(base + fileFrom)}" println
       fileFrom each(source, Shell out("cp", source, base + fileTo))))
   sitemap:filter = fn(name,
     if(name =~ #/({name}.*)\.html/,
