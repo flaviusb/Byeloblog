@@ -31,12 +31,12 @@ GenX = Origin mimic do(
 
   deployRaw = method("Copy a file from the document directory to the deploy directory", +todo, base: baseName,
     todo each(theFile,
-      fileFrom = "". fileTo = ""
+      fileFrom = []. fileTo = ""
       case(theFile,
-        Pair, fileFrom = theFile key. fileTo = theFile value,
-        Text, fileFrom = theFile.     if(theFile =~ #/.*\*.*/, fileTo = "", fileTo = theFile))
-      "Deploying file #{fileFrom} as #{if(fileTo != "", fileTo, base + fileFrom)}" println
-      Shell out("cp", fileFrom, base + fileTo)))
+        Pair, fileFrom = [theFile key].         fileTo = theFile value,
+        Text, fileFrom = FileSystem [theFile].  if(fileFrom length != 1, fileTo = "", fileTo = theFile))
+      "Deploying file #{fileFrom flatMap(it, it + " ")}as #{if(fileTo != "", fileTo, base + fileFrom)}" println
+      fileFrom each(source, Shell out("cp", source, base + fileTo))))
   sitemap:filter = fn(name,
     if(name =~ #/({name}.*)\.html/,
       let(matches, it,
