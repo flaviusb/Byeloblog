@@ -52,5 +52,10 @@ GenX = Origin mimic do(
     pipe = []
     frompipe = fn(x, pipe << x)
     Shell out(printer: frompipe, "markdown", "-F", "0x4", filename)
-    pipe join("\n") replaceAll(#/^"|([^\\])"/, #[$1\\"])))
+    pipe join("\n") replaceAll(#/^"|([^\\])"/, #[$1\\"]))
+  fromMDText = method("Transform the provided Text from markdown into html", mdtext,
+    pipe = []
+    frompipe = fn(x, pipe << x)
+    Shell out(printer: frompipe, "markdown", "-F", "0x4", "--", stdin: mdtext)
+    pipe join("\n") replaceAll(#/^"|([^\\])"/, #[$1\\"]))
 )
