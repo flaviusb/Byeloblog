@@ -12,7 +12,9 @@ Shell = Origin mimic with(
       handle(Condition Error NativeException, fn(x, "Native Exception!" println. x println)),
       if(stdin != nil,
         let(stdinstream, java:io:BufferedWriter new(java:io:OutputStreamWriter new(proc getOutputStream)),
-          stdinstream write(stdin, 0, stdin length))
+          stdinstream write(stdin, 0, stdin length)
+          stdinstream flush
+          stdinstream close)
       )
       loop(
         it = br readLine
