@@ -3,7 +3,7 @@ Shell = Origin mimic with(
   out: method("Shell out to a subprocess with working directory pwd:, write stdin: to the standard input of the subprocess, and use printer: to alter the display printer.",
       printer: fn(x, "From subshell: #{x}" println), +cmds, pwd: baseDir, stdin: nil, env: {},
     pb = java:lang:ProcessBuilder new(java:lang:String[] from(cmds))
-    if(not env empty?,
+    if(not (env empty?),
       proc_env = pb environment
       env each(env_var, proc_env put(env_var key, env_var value)))
     pb directory(java:io:File new(pwd))
