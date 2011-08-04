@@ -24,6 +24,27 @@ about_data = {
 nomod = {
   modified: ""
 }
+; The examples page has a slightly more interesting setup
+examples_sections = {
+  intro: {
+    title: "Overview of the high level architecture"
+  }
+  xml: {
+    title: "Generating XML"
+  },
+  css: {
+    title: "Generating CSS"
+  },
+  shell: {
+    title: "Invoking shell commands"
+  },
+  genx: {
+    title: "Using the Build DSL"
+  },
+  putting_it_all_together: {
+    title: "Putting it all together"
+  }
+}
 examples_data = {
   title:  "Examples of a fictional sibling of an elder god...",
   header: header,

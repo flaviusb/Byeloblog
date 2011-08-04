@@ -10,6 +10,10 @@ arip = dsyntax(#[Anaphorically iterate through a seq, returning "body" executed 
 Parser = Origin mimic do(
   ; Parsers take a parse position and a data structure, and return a parse position and a data structure or nil
   data = ""
+  hp = fn("Used to wrap delayed invocation; if parser is activatable, activate it with the argumetns. Otherwise, it must be a message; call it to get the parser to call, and then call that parser with the arguments.", parser, +arguments,
+    case(parser,
+      Message, 
+    
   ; seq => and and alt => or are combinators
   alt = method("Return a result from the first parser in parsers to return a result; if none do, return nil.", +parsers,
     return fn(pos, struct,
@@ -66,7 +70,9 @@ JSONParser = Parser mimic do(
   string  = seq(lit(#["]), wraplit(escaped, fn(str, str)), lit(#["]))
   number  = wraplit(lit(#/^[-+]?[0-9]+(\.[0-9]*)?/), fn(str, str toDecimal))
   ws      = lit(#/^[ \n]*/)
-  jlist   = seq(wrapped(lit("["), fn(x, y, [])), opt(seq(ws, alt(number, string), star(seq(ws, lit(","), ws, alt(number, string))))), ws, lit("]")))
+  thing   = nil
+  jlist   = seq(wrapped(lit("["), fn(x, y, [])), opt(seq(ws, 'thing), star(seq(ws, lit(","), ws, 'thing))), ws, lit("]"))
+  thing   = alt(number, string))
 jj = JSONParser
 ;  expression = list or dict or literal
 ;  dict = ...
