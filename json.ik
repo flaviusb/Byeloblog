@@ -13,12 +13,15 @@ DefaultBehavior FlowControl letrec = macro(
     if(arg keyword?,
       let(foo, arg,
         Reflector other:cell(self, foo name asText [](0 ..(0 -(2)))) = (''(method(+a, +:b,
+          ; Make inactivateable for the moment
+          if(a empty? && b empty?, return Reflector other:cell(surroundingContext, currentMessage name))
           Reflector other:cell(self, "#{`(foo name asText [](0 ..(0 -(2))))}") = ''(`(foo next)) evaluateOn(self)
           ("#{`(foo name asText [](0 ..(0 -(2))))}" + "(" + a join(", ") + b join(", ") + ")") println
-          Reflector other:send(self, "#{`(foo name asText [](0 ..(0 -(2))))}", * a, * b))) evaluateOn(Ground))  ), 
+          Reflector other:send(self, "#{`(foo name asText [](0 ..(0 -(2))))}", * a, * b))) evaluateOn(self))  ), 
         newObject doMessage(arg)))
   newObject)
 
+; Note: Parsers should be inactivatable eg fn, Parser Combinators should be activatable eg fnx, method
 
 Parser = Origin mimic with(
   ; Parsers take a parse position and a data structure, and return a parse position and a data structure or nil
