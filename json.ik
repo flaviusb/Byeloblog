@@ -7,7 +7,7 @@ arip = dsyntax(#[Anaphorically iterate through a seq, returning "body" executed 
   ''let(theSeq, `theSeq, go, true, while(theSeq next? && go, `let(gs, genSym, ''let(cell(`gs), theSeq next, let(it, cell(`gs), let(cell(`gs), `newassign, let(it, cell(`gs), if(`test, go = false. let(it, cell(`gs), `body)))))))) || `fail)
 )
 
-DefaultBehavior FlowControl dowith = macro(
+DefaultBehavior FlowControl letrec = macro(
   newObject = mimic 
   call arguments each(arg, 
     if(arg keyword?,
@@ -67,7 +67,7 @@ Parser = Origin mimic with(
         Regexp, if(data[idx..-1] =~ alit, [idx + (it end), astb],
           nil)))))
 
-JSONParser = Parser mimic dowith(
+JSONParser = Parser mimic letrec(
   wraplit: method(parser, converter,
     return wrapped(parser, fn(struct, newdata,
       let(ret, converter(newdata),
