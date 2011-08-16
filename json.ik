@@ -7,15 +7,24 @@ arip = dsyntax(#[Anaphorically iterate through a seq, returning "body" executed 
   ''let(theSeq, `theSeq, go, true, while(theSeq next? && go, `let(gs, genSym, ''let(cell(`gs), theSeq next, let(it, cell(`gs), let(cell(`gs), `newassign, let(it, cell(`gs), if(`test, go = false. let(it, cell(`gs), `body)))))))) || `fail)
 )
 
-Parser = Origin mimic do(
+DefaultBehavior FlowControl dowith = macro(
+  newObject = mimic 
+  call arguments each(arg, 
+    if(arg keyword?,
+      let(foo, arg,
+        Reflector other:cell(self, foo name asText [](0 ..(0 -(2)))) = (''(method(+a, +:b,
+          Reflector other:cell(self, "#{`(foo name asText [](0 ..(0 -(2))))}") = ''(`(foo next)) evaluateOn(self)
+          ("#{`(foo name asText [](0 ..(0 -(2))))}" + "(" + a join(", ") + b join(", ") + ")") println
+          Reflector other:send(self, "#{`(foo name asText [](0 ..(0 -(2))))}", * a, * b))) evaluateOn(Ground))  ), 
+        newObject doMessage(arg)))
+  newObject)
+
+
+Parser = Origin mimic with(
   ; Parsers take a parse position and a data structure, and return a parse position and a data structure or nil
-  data = ""
-  hp = fn("Used to wrap delayed invocation; if parser is activatable, activate it with the argumetns. Otherwise, it must be a message; call it to get the parser to call, and then call that parser with the arguments.", parser, +arguments,
-    case(parser,
-      Message, 
-    
   ; seq => and and alt => or are combinators
-  alt = method("Return a result from the first parser in parsers to return a result; if none do, return nil.", +parsers,
+  data: "",
+  alt: method("Return a result from the first parser in parsers to return a result; if none do, return nil.", +parsers,
     return fn(pos, struct,
       iter = parsers seq
       ret = nil
@@ -25,11 +34,11 @@ Parser = Origin mimic do(
         ret    = parser(pos, struct)
         if(ret, break)
       )
-      ret))
+      ret)),
   ; A No op
-  nop = fn(pos, struct, [pos, struct])
-  opt = method("If the child parser is unsuccessful, return the parse position and data unchanged rather than nil.", parser, return alt(parser, nop))
-  star = method("Apply the child parser as many times as it can be applied; return input uinchanged if it cannot be applied.", parser, 
+  nop: fn(pos, struct, [pos, struct]),
+  opt: method("If the child parser is unsuccessful, return the parse position and data unchanged rather than nil.", parser, return alt(parser, nop)),
+  star: method("Apply the child parser as many times as it can be applied; return input unchanged if it cannot be applied.", parser, 
     return fn(pos, struct,
       acc = [pos, struct]
       loop(if(parser(*acc), 
@@ -37,19 +46,19 @@ Parser = Origin mimic do(
         if(it[0] == acc[0], break).
         ;Either accumulate, or break
         acc = it, break))
-      acc))
-  many1 = method("Apply the child parser as many times as it can be applied. If it cannot be applied at all, return nil.", parser, seq(parser, star(parser)))
-  seq = method("Apply the child parsers one after the other. If any fail, return nil.", +parsers,
+      acc)),
+  many1: method("Apply the child parser as many times as it can be applied. If it cannot be applied at all, return nil.", parser, aseq(parser, star(parser))),
+  aseq: method("Apply the child parsers one after the other. If any fail, return nil.", +parsers,
     return fn(position, struct,
       acc = [position, struct]
       parsers each(parser, if(acc, acc = parser(*acc). acc println))
-      acc))
-  wrapped = method("Add a behavior around a parser", parser, mod,
+      acc)),
+  wrapped: method("Add a behavior around a parser", parser, mod,
     return fn(pos, struct,
       if(parser(pos, struct),
         it[1] = mod(it[1], data[pos...it[0]])
-        it, nil)))
-  lit = method("Match a Text or Regexp.", alit,
+        it, nil))),
+  lit: method("Match a Text or Regexp.", alit,
     return fn(idx, astb,
       case(alit,
         Text,   if(data[idx...(idx +(alit length))] == alit,
@@ -58,22 +67,23 @@ Parser = Origin mimic do(
         Regexp, if(data[idx..-1] =~ alit, [idx + (it end), astb],
           nil)))))
 
-JSONParser = Parser mimic do(
-  wraplit = method(parser, converter,
+JSONParser = Parser mimic dowith(
+  wraplit: method(parser, converter,
     return wrapped(parser, fn(struct, newdata,
-      case(struct,
-        Pair,  (struct key => converter(newdata)),
-        List,  struct + [converter(newdata)],
-        else,  converter(newdata)))))
-  escapes = lit(#/^\\("|(\\)|(\/)|b|f|n|r|t|[0-9]{4})/)
-  escaped = star(alt(lit(#/^[^\\"]/), escapes))
-  string  = seq(lit(#["]), wraplit(escaped, fn(str, str)), lit(#["]))
-  number  = wraplit(lit(#/^[-+]?[0-9]+(\.[0-9]*)?/), fn(str, str toDecimal))
-  ws      = lit(#/^[ \n]*/)
-  thing   = nil
-  jlist   = seq(wrapped(lit("["), fn(x, y, [])), opt(seq(ws, 'thing), star(seq(ws, lit(","), ws, 'thing))), ws, lit("]"))
-  thing   = alt(number, string))
-jj = JSONParser
+      let(ret, converter(newdata),
+        if(ret == nil,
+          ret,
+          case(struct,
+            Pair,  (struct key => ret),
+            List,  struct + [ret],
+            else,  ret)))))),
+  escapes: lit(#/^\\("|(\\)|(\/)|b|f|n|r|t|[0-9]{4})/),
+  escaped: star(alt(lit(#/^[^\\"]/), escapes)),
+  string:  aseq(lit(#["]), wraplit(escaped, fn(str, str)), lit(#["])),
+  number:  wraplit(lit(#/^[-+]?[0-9]+(\.[0-9]*)?/), fn(str, str toDecimal)),
+  ws:      lit(#/^[ \n]*/),
+  jlist:   aseq(wrapped(lit("["), fn(x, y, [])), opt(aseq(ws, thing), star(aseq(ws, lit(","), ws, thing))), ws, lit("]")),
+  thing:   alt(number, string))
 ;  expression = list or dict or literal
 ;  dict = ...
 ;
