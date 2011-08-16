@@ -82,7 +82,7 @@ JSONParser = Parser mimic letrec(
   string:  aseq(lit(#["]), wraplit(escaped, fn(str, str)), lit(#["])),
   number:  wraplit(lit(#/^[-+]?[0-9]+(\.[0-9]*)?/), fn(str, str toDecimal)),
   ws:      lit(#/^[ \n]*/),
-  jlist:   aseq(wrapped(lit("["), fn(x, y, [])), opt(aseq(ws, thing), star(aseq(ws, lit(","), ws, thing))), ws, lit("]")),
+  jlist:   aseq(wrapped(lit("["), fn(x, y, [])), opt(aseq(aseq(ws, thing), star(aseq(ws, lit(","), ws, thing)))), ws, lit("]")),
   thing:   alt(number, string))
 ;  expression = list or dict or literal
 ;  dict = ...
