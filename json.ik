@@ -8,17 +8,16 @@ arip = dsyntax(#[Anaphorically iterate through a seq, returning "body" executed 
 )
 
 DefaultBehavior FlowControl letrec = macro(
-  newObject = mimic 
+  newObject = @mimic 
   call arguments each(arg, 
     if(arg keyword?,
-      let(foo, arg,
-        Reflector other:cell(self, foo name asText [](0 ..(0 -(2)))) = (''(method(+a, +:b,
+        Reflector other:cell(self, arg name asText [0..-2]) = (''(method(+a, +:b,
           ; Make inactivateable for the moment
           if(a empty? && b empty?, return @@)
-          Reflector other:cell(self, "#{`(foo name asText [](0 ..(0 -(2))))}") = ''(`(foo next)) evaluateOn(self)
-          ("#{`(foo name asText [](0 ..(0 -(2))))}" + "(" + a join(", ") + b join(", ") + ")") println
-          Reflector other:send(self, "#{`(foo name asText [](0 ..(0 -(2))))}", * a, * b))) evaluateOn(self))  ), 
-        newObject doMessage(arg)))
+          Reflector other:cell(self, "#{`(arg name asText [0..-2])}") = ''(`(arg next)) evaluateOn(self)
+          ("#{`(arg name asText [0..-2])}" + "(" + a join(", ") + b join(", ") + ")") println
+          Reflector other:send(self, "#{`(arg name asText [0..-2])}", * a, * b))) evaluateOn(self)), 
+        Reflector other:send(newObject, arg)))
   newObject)
 
 ; Note: Parsers should be inactivatable eg fn, Parser Combinators should be activatable eg fnx, method
