@@ -15,7 +15,6 @@ DefaultBehavior FlowControl letrec = macro(
           ; Make inactivateable for the moment
           if(a empty? && b empty?, return @@)
           Reflector other:cell(self, "#{`(arg name asText [0..-2])}") = ''(`(arg next)) evaluateOn(self)
-          ("#{`(arg name asText [0..-2])}" + "(" + a join(", ") + b join(", ") + ")") println
           Reflector other:send(self, "#{`(arg name asText [0..-2])}", * a, * b))) evaluateOn(self)), 
         Reflector other:send(newObject, arg)))
   newObject)
