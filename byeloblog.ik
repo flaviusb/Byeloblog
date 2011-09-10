@@ -6,6 +6,8 @@ use("css.ik")
 use("shell.ik")
 use("genx.ik")
 
-if(FileSystem exists?("build.ik"),
-  use((System currentWorkingDirectory) + "/build.ik"),
-  "No build.ik defined in #{System currentWorkingDirectory}" println)
+if(System programArguments empty?,
+  if(FileSystem exists?("build.ik"),
+    use((System currentWorkingDirectory) + "/build.ik"),
+    "No build.ik defined in #{System currentWorkingDirectory}" println),
+  use((System programArguments [0])))
