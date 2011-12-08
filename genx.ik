@@ -34,13 +34,12 @@ GenX = Origin mimic do(
       case(task key,
         Pair, context = task key key. fromFile = task key value,
         Text, context = "".           fromFile = task key)
-      #[Generating "#{fromFile}" from "#{task value}"] println
+      #[Generating "#{fromFile}" from a template"] println
       time = ""
       mktime = fn(x, time = x)
       timeMod = ""
       unless(context[:modified],
-        Shell out(printer: mktime, "stat", "-c", "%y", task value)
-        timeMod = time replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3") replace(#/([0-9]{2})([0-9]{2})$/, "$1:$2"),
+        timeMod = "",
         timeMod = context[:modified])
       built << { file: fromFile, modified: timeMod }
       case(fromFile,
