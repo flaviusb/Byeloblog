@@ -58,4 +58,7 @@ XML = Origin mimic do(
   fromQuotedFile = method("Read a file in XML render compatible quoted form, turn it into a Message, then eval it into the final message",
     filename, context: XML,
     Message fromText(FileSystem readFully(filename)) evaluateOn(context, context))
+  fromQuotedTemplate = method("Eval a message into its final form",
+    msg, context: XML,
+    msg evaluateOn(context, context))
 )

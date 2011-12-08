@@ -10,7 +10,7 @@ GenX = Origin mimic do(
     FileSystem withOpenFile(base + fname, fn(out, out println(contents))))
   built = []
   baseURI = ""
-  build = method("Method that renders an ik form from a file into a document. It tries to guess what kind of transform to apply based on the file extension of the file to write.", +todo, base: baseDir,
+  build = method("Method that renders an ik form from a file into a document. It tries to guess what kind of transform to apply based on the file extension of the file to write.", +todo, base: baseDir, 
     todo each(task,
       fromFile = "". context = ""
       case(task key,
@@ -28,6 +28,24 @@ GenX = Origin mimic do(
       case(fromFile,
         #/.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedFile(task value))),
         else,       writeOut(base: base, fromFile, XML render(XML fromQuotedFile(task value, context: XML mimic with(data: context)))))))
+  buildTemplate = method("Method that renders an ik form from a message into a document. It tries to guess what kind of transform to apply based on the file extension of the file to write.", +todo, base: baseDir, 
+    todo each(task,
+      fromFile = "". context = ""
+      case(task key,
+        Pair, context = task key key. fromFile = task key value,
+        Text, context = "".           fromFile = task key)
+      #[Generating "#{fromFile}" from "#{task value}"] println
+      time = ""
+      mktime = fn(x, time = x)
+      timeMod = ""
+      unless(context[:modified],
+        Shell out(printer: mktime, "stat", "-c", "%y", task value)
+        timeMod = time replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3") replace(#/([0-9]{2})([0-9]{2})$/, "$1:$2"),
+        timeMod = context[:modified])
+      built << { file: fromFile, modified: timeMod }
+      case(fromFile,
+        #/.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedTemplate(task value))),
+        else,       writeOut(base: base, fromFile, XML render(XML fromQuotedTemplate(task value, context: XML mimic with(data: context)))))))
 
   deployRaw = method("Copy a file from the document directory to the deploy directory", +todo, base: baseName,
     todo each(theFile,
