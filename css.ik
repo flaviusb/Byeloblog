@@ -16,8 +16,10 @@ CSS = Origin mimic do(
       textify -> pairen
     )
     textify)
-  makeprop = method("Make an individual css property from a key => value pair", prop, context: CSS,
-    "  #{prop key}: #{prop value};\n"
+  makeprop = method("Make an individual css property from a key => value pair, or insert a literal string if one is provided instead", prop, context: CSS,
+    if(prop value == nil,
+      "  #{prop key}\n",
+      "  #{prop key}: #{prop value};\n")
   )
   attr = method("Print a selector attribute as part of an attribute list",
   k, v,
