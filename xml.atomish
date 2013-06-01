@@ -1,0 +1,39 @@
+XML = Origin mimic with(
+  doctype: fn("Print a doctype string", type,
+    case(type,
+      "xml",   #[<?xml version="1.0" encoding="utf-8"?>\n],
+      "xhtml", "<!DOCTYPE html>\n")),
+  comment: fn("Print a comment", text, "\n<!--\n#{text}\n-->\n"),
+  attr:    fn("Print an attribute inline", k, v,
+             " #{k}=\"#{v}\""),
+  render:  fn(quoted,
+             stack = Array()
+             keyword? = fn(arg,
+               if(arg hasCell("name"),
+                 false,
+                 if(arg hasCell("args"),
+                   arg args [0] name ~= /$.*:^/,
+                   false)))                     
+             render:tag = fn(tag,
+               let(
+                 ret, "<#{tag name}#{tag arguments flatMap(arg,
+                      cond(
+                        keyword?(arg),  " #{arg name [0 … -1]}=\"#{arg next}\"",
+                                        "")
+                      )}>",
+                 stack push!("</#{tag name}>")
+                 ret)
+             )
+             let(
+               temp, quoted asArray flatMap(msg,
+                 case(msg name,
+                   "",   msg args map(render) join,
+                   ".",  if(stack length > 1, stack pop!, ""),
+                   "//", "<!-- #{render(msg arguments [0])} -->",
+                         render:tag(msg))),
+               temp + (stack reverse join))
+           )
+  fromQuotedFile: fn("Read a file in XML render compatible form, and turn it into a Message.",
+    filename, context: XML,
+    eval(read(FileSystem readFully(filename)), context))
+)
