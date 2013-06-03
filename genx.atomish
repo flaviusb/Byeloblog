@@ -49,17 +49,18 @@ GenX = Origin mimic with(
         Text, fileFrom = FileSystem [theFile].       if(fileFrom length != 1, fileTo = "", fileTo = theFile))
       say("Deploying file #{fileFrom flatMap(it, it + " ")}as #{fileTo ?|(base + fileFrom)}")
       fileFrom each(source, Shell out("cp", source, base + fileTo)))),
-  sitemap:filter = fn(name,
-    if(name =~ #/({name}.*)\.html/,
-      let(matches, it,
-        if((matches names) include?(:name),
-          if(matches[:name] == "index",
-            "",
-            matches[:name])))))
-  sitemap = method("Generate a google sitemap.xml based on the urls in built.", base: baseDir, name: "sitemap.xml", filter: sitemap:filter,
-    "Building sitemap: #{name}" println
-    urls = built map(uri, if(filter(uri[:file]), {modified: uri[:modified], file: baseURI + it})) filter
-    writeOut(base: base, name, XML render(XML fromQuotedFile((System currentDirectory) + "/lib/sitemap.ik", context: XML mimic with(data: {urls: urls})))))
+  sitemap:filter: fn(name,
+    if(matches: name =~ #/({name}.*)\.html/,
+        if((matches names) include?("name"),
+          let(ret, if(matches ["name"] == "index",
+                     "",
+                     matches ["name"]),
+            ret setCell("isTruthy", true)
+            ret)))),
+  sitemap: fn("Generate a google sitemap.xml based on the urls in built.", base: baseDir, name: "sitemap.xml", filter: GenX sitemap:filter,
+    say("Building sitemap: #{name}")
+    urls = built map(uri, if(it: filter(uri ["file"]), Map(modified: uri ["modified"], file: baseURI + it))) filter
+    writeOut(base: base, name, XML render(XML fromQuotedFile((System cwd) + "/lib/sitemap.ik", context: XML mimic with(data: Map(urls: urls)))))),
   fromMD = method("Get a markdown file, process it, and return it", filename,
     pipe = []
     frompipe = fn(x, pipe << x)
