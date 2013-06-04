@@ -61,14 +61,16 @@ GenX = Origin mimic with(
     say("Building sitemap: #{name}")
     urls = built map(uri, if(it: filter(uri ["file"]), Map(modified: uri ["modified"], file: baseURI + it))) filter
     writeOut(base: base, name, XML render(XML fromQuotedFile((System cwd) + "/lib/sitemap.ik", context: XML mimic with(data: Map(urls: urls)))))),
-  fromMD = method("Get a markdown file, process it, and return it", filename,
-    pipe = []
-    frompipe = fn(x, pipe << x)
-    Shell out(printer: frompipe, "markdown", "-F", "0x200004", filename)
-    pipe join("\n") replaceAll(#/^"|([^\\])"/, #[$1\\"]))
-  fromMDText = method("Transform the provided Text from markdown into html", mdtext,
-    pipe = []
-    frompipe = fn(x, pipe << x)
-    Shell out(printer: frompipe, "markdown", "-F", "0x200004", "--", stdin: mdtext)
-    pipe join("\n") replaceAll(#/^"|([^\\])"/, #[$1\\"]))
+  fromMD: fn("Get a markdown file, process it, and return it", filename,
+    let(
+        pipe, Array(),
+        frompipe, fn(x, pipe push!(x)),
+      Shell out(printer: frompipe, "markdown", "-F", "0x200004", filename)
+      pipe join("\n") replaceAll(#/^"|([^\\])"/, #[$1\\"]))),
+  fromMDText: fn("Transform the provided Text from markdown into html", mdtext,
+    let(
+        pipe, Array(),
+        frompipe, fn(x, pipe push!(x)),
+      Shell out(printer: frompipe, "markdown", "-F", "0x200004", "--", stdin: mdtext)
+      pipe join("\n") replaceAll(#/^"|([^\\])"/, #[$1\\"])))
 )
