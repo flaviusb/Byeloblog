@@ -8,31 +8,48 @@ XML = Origin mimic with(
              " #{k}=\"#{v}\""),
   render:  fn(quoted,
              stack = Array()
-             keyword? = fn(arg,
-               if(arg hasCell("name"),
-                 false,
-                 if(arg hasCell("args"),
-                   arg args [0] name ~= /$.*:^/,
-                   false)))                     
-             render:tag = fn(tag,
+             keyword? = fn(unreal_arg,
+               ؟say("Unreal arg: #{print_with_forms(unreal_arg)}")
+               let(arg, unreal_arg asArray [0],
+                 ؟say("Real-real arg: #{print_with_forms(arg)}")
+                 if(arg hasCell("name"),
+                   false,
+                   if(arg hasCell("args"),
+                     ؟say("Name: #{arg args [0] name}")
+                     ؟say("Matches: #{(arg args [0] name ~= /^.*:$/) asBool asText}")
+                     (arg args [0] name ~= /^.*:$/) asBool,
+                     false))))
+             render:tag = fn(unreal_tag,
+               tag = unreal_tag asArray [0]
+               ؟say(tag)
+               ؟say(tag name)
+               ؟say(print(tag args))
                let(
-                 ret, "<#{tag name}#{tag arguments flatMap(arg,
+                 ret, "<#{tag name}#{tag args map(arg,
                       cond(
-                        keyword?(arg),  " #{arg name [0 … -1]}=\"#{arg next}\"",
+                        keyword?(''(`(arg))),  " #{arg args [0] name [0 … -2]}=\"#{arg args [1]}\"",
                                         "")
-                      )}>",
+                      ) join}>",
                  stack push!("</#{tag name}>")
                  ret)
              )
              let(
-               temp, quoted asArray flatMap(msg,
-                 case(msg name,
-                   "",   msg args map(render) join,
-                   ".",  if(stack length > 1, stack pop!, ""),
-                   "//", "<!-- #{render(msg arguments [0])} -->",
-                         render:tag(msg))),
-               temp + (stack reverse join))
-           )
+               temp, quoted asArray map(msg_chain,
+                 ؟say(print(msg_chain))
+                 msg_chain args map(msg,
+                   ؟say(msg)
+                   ؟say("Msg name: #[#{msg name}]")
+                   ؟say(print(msg))
+                   ؟say(print(msg args))
+                   if(print(msg) ==(" . "),
+                     if(stack length > 1, stack pop!, ""),
+                     case(msg name,
+                       "",   #.say(print(msg args)) . msg args map(x, render(x)) join,
+                       ".",  if(stack length > 1, stack pop!, ""),
+                       "//", "<!-- #{render(msg args [0])} -->",
+                             render:tag(''(`(msg)))))) join) join,
+               temp +(stack join))
+           ),
   fromQuotedFile: fn("Read a file in XML render compatible form, and turn it into a Message.",
     filename, context: XML,
     eval(read(FileSystem readFully(filename)), context))

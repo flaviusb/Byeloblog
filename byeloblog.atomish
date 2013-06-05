@@ -2,7 +2,7 @@
 
 ؟System loadPath << (System currentDirectory)
 use("xml.atomish")
-use("genx.atomish")
+؟use("genx.atomish")
 
 if(System programArguments length == 0,
   if(FileSystem exists?("build.atomish"),
