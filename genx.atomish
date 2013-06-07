@@ -17,11 +17,11 @@ GenX = Origin mimic with(
       timeMod = ""
       unless(context ["modified"],
         Shell out(printer: mktime, "stat", "-c", "%y", task value)
-        timeMod = time replace(#/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\..*([-+Z].*)/, "$1T$2$3") replace(#/([0-9]{2})([0-9]{2})$/, "$1:$2"),
+        timeMod = time replace(/([0-9]{4}-[0-9][0-9]-[0-9][0-9]) (.*)\\..*([-+Z].*)/, "$1T$2$3") replace(/([0-9]{2})([0-9]{2})$/, "$1:$2"),
         timeMod = context ["modified"])
       built push!(Map(file: fromFile, modified: timeMod))
       case(fromFile,
-        #/.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedFile(task value))),
+        /.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedFile(task value))),
         else,       writeOut(base: base, fromFile, XML render(XML fromQuotedFile(task value, context: XML mimic with(data: context))))))),
   buildTemplate: fn("Method that renders an atomish form from a message into a document. It tries to guess what kind of transform to apply based on the file extension of the file to write.", +todo, base: baseDir, 
     todo each(task,
@@ -38,7 +38,7 @@ GenX = Origin mimic with(
         timeMod = context ["modified"])
       built push!(Map(file: fromFile, modified: timeMod))
       case(fromFile,
-        #/.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedTemplate(task value))),
+        /.*.css$/, writeOut(base: base, fromFile, CSS render(CSS fromQuotedTemplate(task value))),
         else,       writeOut(base: base, fromFile, XML render(XML fromQuotedTemplate(task value, context: XML mimic with(data: context))))))),
 
   deployRaw: fn("Copy a file from the document directory to the deploy directory", +todo, base: baseName,
@@ -50,7 +50,7 @@ GenX = Origin mimic with(
       say("Deploying file #{fileFrom flatMap(it, it + " ")}as #{fileTo ?|(base + fileFrom)}")
       fileFrom each(source, Shell out("cp", source, base + fileTo)))),
   sitemap:filter: fn(name,
-    if(matches: name =~ #/({name}.*)\.html/,
+    if(matches: name =~ /({name}.*)\\.html/,
         if((matches names) include?("name"),
           let(ret, if(matches ["name"] == "index",
                      "",
@@ -66,11 +66,11 @@ GenX = Origin mimic with(
         pipe, Array(),
         frompipe, fn(x, pipe push!(x)),
       Shell out(printer: frompipe, "markdown", "-F", "0x200004", filename)
-      pipe join("\n") replaceAll(#/^"|([^\\])"/, #[$1\\"]))),
+      pipe join("\n") replaceAll(/^"|([^\\])"/, #[$1\\"]))),
   fromMDText: fn("Transform the provided Text from markdown into html", mdtext,
     let(
         pipe, Array(),
         frompipe, fn(x, pipe push!(x)),
       Shell out(printer: frompipe, "markdown", "-F", "0x200004", "--", stdin: mdtext)
-      pipe join("\n") replaceAll(#/^"|([^\\])"/, #[$1\\"])))
+      pipe join("\n") replaceAll(/^"|([^\\])"/, #[$1\\"])))
 )
