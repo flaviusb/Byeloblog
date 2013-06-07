@@ -41,8 +41,11 @@ XML = Origin mimic with(
                    ؟say("Msg name: #[#{msg name}]")
                    ؟say(print(msg))
                    ؟say(print(msg args))
-                   if(print(msg) ==(" . "),
-                     if(stack length > 1, stack pop!, ""),
+                   cond(                     
+                     eval(unquote(''(Mirror ["pre_scala_mirror"] dot?(`(''(`(msg))))))),
+                       if(stack length > 1, stack pop!, ""),
+                     eval(unquote(''(Mirror ["pre_scala_mirror"] idempotent?(`(''(`(msg))))))),
+                       msg asText,
                      case(msg name,
                        "",   #.say(print(msg args)) . msg args map(x, render(x)) join,
                        ".",  if(stack length > 1, stack pop!, ""),
