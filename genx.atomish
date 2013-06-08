@@ -1,7 +1,7 @@
 GenX = Origin mimic with(
   writeOut: fn(fname, contents, base: FileSystem cwd,
     if(FileSystem exists?(base, fname), FileSystem removeFile!(base, fname))
-    unless(FileSystem exists?(FileSystem parentOf(base, fname)), Shell out("mkdir", "-p", FileSystem parentOf(base, fname)))
+    unless(FileSystem exists?(absolute_file: FileSystem parentOf(base, fname)), Shell out("mkdir", "-p", FileSystem parentOf(base, fname)))
     FileSystem withOpenFile(base, fname, fn(out, out put(contents)))),
   built: Array(),
   baseURI:  "",

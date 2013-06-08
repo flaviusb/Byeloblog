@@ -1,0 +1,16 @@
+say(XML doctype("xml"))
+say(XML comment("foo bar"))
+say(XML attr("zog", "bar"))
+say(XML render('(a b c)))
+say(XML render('(a b(a: "b", b: "c") c)))
+say(XML render('(a . b(a: "b", b: "c")
+  c)))
+say(XML render('(urlset url "http://example.com")))
+say(XML render(eval(read(#[''(`(XML doctype("xml")) foo(xmlns: "http://example.com/foobar") "There should be text here." bar "And also here")]))))
+say(XML render('(weew asd-fr(r-eab: "foofoo", qw: "er") f-red)))
+say(XML render(
+      '(electro
+         (bass sound(gravel: "true") "wubwubwub")
+         (! bass sound(gravel: "false") "doot doot doot deet deet zot pew pew")
+         (bass sound(gravel: "false")  "oontzoontzoontz"))
+    ))
