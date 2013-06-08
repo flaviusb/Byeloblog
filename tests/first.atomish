@@ -1,0 +1,7 @@
+''(`(XML doctype("xml"))
+  xml
+    first "(1)"
+    second "(2)"
+    (third      a "(3a)"
+      b "(3b)"
+      c "(3c)"))

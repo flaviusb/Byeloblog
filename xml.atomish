@@ -55,7 +55,7 @@ XML = Origin mimic with(
                    temp +(stack join))),
                  render:main(initial_quoted)
            )),
-  fromQuotedFile: fn("Read a file in XML render compatible form, and turn it into a Message.",
-    filename, context: XML,
-    eval(read(FileSystem readFully(filename)), context))
+  fromQuotedFile: fn("Read a file in XML render compatible form, and turn it into a Message.", filename, context: XML,
+    #; Access 'context' through lexical cell "context"
+    eval(read(FileSystem readFully(filename))))
 )

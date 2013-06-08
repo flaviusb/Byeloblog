@@ -12,3 +12,10 @@ say(FileSystem exists?(relative_path: "foo/bar") asText)
 say(FileSystem exists?(relative_path: "foo") asText)
 say(FileSystem exists?(relative_path: "foho") asText)
 say(FileSystem exists?(relative_path: "foo/bar") asText)
+GenX build(
+  "first.atomish",
+  "first.atomish" ⇒ "first (again).xml")
+Array("first.xml", "first (again).xml") each(file, 
+  say(FileSystem readFully(file))
+  FileSystem removeFile!(file))
+
