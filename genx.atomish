@@ -7,10 +7,11 @@ GenX = Origin mimic with(
   baseURI:  "",
   build: fn("Method that renders an atomish form from a file into a document. It tries to guess what kind of transform to apply based on the file extension of the file to write.", +todo, base: FileSystem cwd, 
     todo each(task,
-      let(
-          fomFile, "",
-          oFile,   "",
-          context,  Map(),
+      #;let(  #; Currently "let" and "=" do not play nicely. This is a problem.
+          #;fromFile, "",
+          #;toFile,   "",
+          #;context,  Map(),
+        context = Map()
         if(task #pair?,
           if(task key #pair?,
             fromFile = task key key. context = task key value . toFile = task value,
@@ -27,7 +28,7 @@ GenX = Origin mimic with(
         #;built push!(Map(file: fromFile, modified: timeMod))
         if(toFile ~= /.*.css$/,
           GenX writeOut(base: base, toFile, CSS render(CSS fromQuotedFile(fromFile))),
-          GenX writeOut(base: base, toFile, XML render(XML fromQuotedFile(fromFile, context: XML mimic with(data: context)))))))),
+          GenX writeOut(base: base, toFile, XML render(XML fromQuotedFile(fromFile, context: XML mimic with(data: context)))))#.).)),
   buildTemplate: fn("Method that renders an atomish form from a message into a document. It tries to guess what kind of transform to apply based on the file extension of the file to write.", +todo, base: baseDir, 
     todo each(task,
       fromFile = "". context = ""
