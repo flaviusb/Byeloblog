@@ -9,6 +9,13 @@ XML = Origin mimic with(
   render:  fn(initial_quoted,
              let(
                  stack,    Array(),
+                 pair?, fn(unreal_arg,
+                   let(arg, unreal_arg asArray [0],
+                     if(arg hasCell("name"),
+                       false,
+                       if(arg hasCell("args"),
+                         if(arg args length ==(3),
+                           arg args [1] name ==("⇒")))))),
                  keyword?, fn(unreal_arg,
                    ؟say("Unreal arg: #{print_with_forms(unreal_arg)}")
                    let(arg, unreal_arg asArray [0],
@@ -28,8 +35,9 @@ XML = Origin mimic with(
                    let(
                      ret, "<#{tag name}#{tag args map(arg,
                           cond(
+                            pair?(''(`(arg))),     " #{arg args [0]}=\"#{arg args [2]}\"",
                             keyword?(''(`(arg))),  " #{arg args [0] name [0 … -2]}=\"#{arg args [1]}\"",
-                                            "")
+                                                   "")
                           ) join}>",
                      stack push!("</#{tag name}>")
                      ret)

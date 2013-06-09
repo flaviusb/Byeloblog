@@ -11,6 +11,6 @@ say(XML render('(weew asd-fr(r-eab: "foofoo", qw: "er") f-red)))
 say(XML render(
       '(electro
          (bass sound(gravel: "true") "wubwubwub")
-         (! bass sound(gravel: "false") "doot doot doot deet deet zot pew pew")
+         (! bass sound(gravel: "false", "vocal-tag" ⇒ "true") "doot doot doot deet deet zot pew pew yeah!")
          (bass sound(gravel: "false")  "oontzoontzoontz"))
     ))
