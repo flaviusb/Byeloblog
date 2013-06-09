@@ -7,5 +7,5 @@ use("genx.atomish")
 if(System programArguments length == 0,
   if(FileSystem exists?("build.atomish"),
     use("build.atomish"),
-    say("No build.atomish defined in #{System cwd}")),
+    say("No build.atomish defined in #{FileSystem cwd}")),
   use(System programArguments [0]))
