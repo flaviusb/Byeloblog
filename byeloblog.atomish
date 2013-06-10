@@ -1,8 +1,8 @@
 #!/usr/bin/env preatomish
 
 ؟System loadPath << (System currentDirectory)
-use("xml.atomish")
-use("genx.atomish")
+use(base: System programDirectory, "xml.atomish")
+use(base: System programDirectory, "genx.atomish")
 
 if(System programArguments length == 0,
   if(FileSystem exists?("build.atomish"),

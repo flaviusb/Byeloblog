@@ -1,4 +1,3 @@
-FileSystem setCell("cwd", "#{FileSystem cwd}/tests")
 say(FileSystem cwd)
 say(FileSystem parentOf("/home", "."))
 say(FileSystem parentOf(absolute_path: FileSystem cwd))
