@@ -41,7 +41,7 @@ XML = Origin mimic with(
                             keyword?(''(`(arg))),  " #{arg args [0] name [0 … -2]}=\"#{arg args [1]}\"",
                                                    "")
                           ) join}>",
-                     stack push!("</#{tag name}>")
+                     stack push!("</#{XML dotify(tag name)}>")
                      ret)
                  ),
                  render:main, fn(quoted,
