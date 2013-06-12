@@ -6,6 +6,8 @@ XML = Origin mimic with(
   comment: fn("Print a comment", text, "\n<!--\n#{text}\n-->\n"),
   attr:    fn("Print an attribute inline", k, v,
              " #{k}=\"#{v}\""),
+  dotify:  fn("Convert exclamation marks to dots in tag names.", tagname,
+             tagname replaceAll(/!/, ".")),
   render:  fn(initial_quoted,
              let(
                  stack,    Array(),
@@ -33,7 +35,7 @@ XML = Origin mimic with(
                    ؟say(tag name)
                    ؟say(print(tag args))
                    let(
-                     ret, "<#{tag name}#{tag args map(arg,
+                     ret, "<#{XML dotify(tag name)}#{tag args map(arg,
                           cond(
                             pair?(''(`(arg))),     " #{arg args [0]}=\"#{arg args [2]}\"",
                             keyword?(''(`(arg))),  " #{arg args [0] name [0 … -2]}=\"#{arg args [1]}\"",
