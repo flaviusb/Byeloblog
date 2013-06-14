@@ -44,29 +44,23 @@ XML = Origin mimic with(
                      stack push!("</#{XML dotify(tag name)}>")
                      ret)
                  ),
-                 render:main, fn(quoted,
-                   let(
-                   temp, quoted asArray map(msg_chain,
-                     ؟say("render:main: #{print_with_forms(msg_chain)}")
-                     if(eval(unquote(''(Mirror ["pre_scala_mirror"] message?(`(''(`(msg_chain))))))) or(
-                        eval(unquote(''(Mirror ["pre_scala_mirror"] call?(`(''(`(msg_chain)))))))),
-                       Array(msg_chain),
-                       msg_chain args) map(msg,
-                         ؟say(print_with_forms(msg))
-                         ؟say("Msg name: #[#{msg name}]")
-                         ؟say(print(msg))
-                         ؟say(print(msg args))
-                         cond(                     
-                           eval(unquote(''(Mirror ["pre_scala_mirror"] dot?(`(''(`(msg))))))),
-                             if(stack length > 1, stack pop!, ""),
-                           eval(unquote(''(Mirror ["pre_scala_mirror"] idempotent?(`(''(`(msg))))))),
-                             msg asText,
-                           case(msg name,
-                             "",   #. say("Commated: #{print_with_forms(msg args)}") . msg args map(x, XML render(''(`(x)))) join,
-                             "!",  stack push!(" -->"). "<!-- ",
-                                   render:tag(''(`(msg)))))) join) join,
-                   temp +(stack join))),
-                 render:main(initial_quoted)
+                 unwrap_forms, fn(quoted_possible, already: false,
+                     (quoted_possible asArray map(msg,
+                       cond(
+                          eval(unquote(''(Mirror ["pre_scala_mirror"] message?(`(''(`(msg))))))) or(
+                          eval(unquote(''(Mirror ["pre_scala_mirror"] call?(`(''(`(msg)))))))),
+                            case(msg name,
+                              "",   #. say("Commated: #{print_with_forms(msg args)}") . msg args map(x, XML render(''(`(x)))) join,
+                              "!",  stack push!(" -->"). "<!-- ",
+                                    render:tag(''(`(msg)))),
+                          eval(unquote(''(Mirror ["pre_scala_mirror"] dot?(`(''(`(msg))))))),
+                            if(stack length > 1, stack pop!, ""),
+                          eval(unquote(''(Mirror ["pre_scala_mirror"] idempotent?(`(''(`(msg))))))),
+                            msg asText,
+                          if(already,
+                            msg args map(arg, XML render(''(`(arg)))),
+                            msg args map(arg, unwrap_forms(''(`(arg)), already: true))) join)) join)),
+                 unwrap_forms(initial_quoted) +(stack join)
            )),
   fromQuotedFile: fn("Read a file in XML render compatible form, and turn it into a Message.", filename, context: XML,
     #; Access 'context' through lexical cell "context"
