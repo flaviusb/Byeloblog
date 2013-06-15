@@ -14,8 +14,8 @@ say(FileSystem exists?(relative_path: "foo/bar") asText)
 GenX build(
   "first.atomish",
   "first.atomish" ⇒ "first (again).xml",
-  "manifest.atomish")
-Array("first.xml", "first (again).xml", "manifest.xml") each(file, 
+  "more.atomish")
+Array("first.xml", "first (again).xml", "more.xml") each(file, 
   say(FileSystem readFully(file))
   FileSystem removeFile!(file))
 

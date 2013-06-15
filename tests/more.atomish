@@ -1,0 +1,10 @@
+''(
+`(XML doctype("xml"))
+`(XML comment("Copyblah blah blah 20XX"))
+xxxxxx("zalgo:versionName" ⇒ "0.333", "zalgo:versionCode" ⇒ "42", "delivery" ⇒ "foo.bar.baz.quux", "xmlns:zalgo" ⇒ "http://schemas.zalgo.com/pony/pony/pony", "zalgo:deliveryLocation" ⇒ "auto")
+  uses-pony(zalgo:minPonyVersion: "15")
+  ((unnameable-character-planes(zalgo:icon: "@lovecraftean/generated", zalgo:label: "FnordFnordFnord", zalgo:theme: "@lovecraftean:genre/Cosmic.Horror")
+    (activity(zalgo:label: "FnordFnordFnord", zalgo:name: ""))
+    (activity(zalgo:label: "Parser", zalgo:name: "Regex"))
+    (activity(zalgo:label: "Entities", zalgo:name: "Beyond the Basic Multilingual Plane"))))
+)
