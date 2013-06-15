@@ -47,19 +47,22 @@ XML = Origin mimic with(
                  unwrap_forms, fn(quoted_possible, already: false,
                      (quoted_possible asArray map(msg,
                        cond(
+                          eval(unquote(''(Mirror ["pre_scala_mirror"] brackets?(`(''(`(msg))))))),
+                            #.say(print(msg)) . msg args map(arg, XML render(''(`(arg)))) join,
                           eval(unquote(''(Mirror ["pre_scala_mirror"] message?(`(''(`(msg))))))) or(
                           eval(unquote(''(Mirror ["pre_scala_mirror"] call?(`(''(`(msg)))))))),
                             case(msg name,
-                              "",   #. say("Commated: #{print_with_forms(msg args)}") . msg args map(x, XML render(''(`(x)))) join,
+                              "",   #.say("Commated: #{print_with_forms(msg args)}") . msg args map(x, XML render(''(`(x)))) join,
                               "!",  stack push!(" -->"). "<!-- ",
                                     render:tag(''(`(msg)))),
                           eval(unquote(''(Mirror ["pre_scala_mirror"] dot?(`(''(`(msg))))))),
                             if(stack length > 1, stack pop!, ""),
                           eval(unquote(''(Mirror ["pre_scala_mirror"] idempotent?(`(''(`(msg))))))),
                             msg asText,
-                          if(already,
-                            msg args map(arg, XML render(''(`(arg)))),
-                            msg args map(arg, unwrap_forms(''(`(arg)), already: true))) join)) join)),
+                            #; If msg is not anything else, we assume it must be an AtomishForm and should be unwrapped 'in place', unless it is two forms deep
+                            if(already,
+                              msg args map(arg, XML render(''(`(arg)), already: false)) join,
+                              msg args map(arg, unwrap_forms(''(`(arg)), already: true)) join))) join)),
                  unwrap_forms(initial_quoted) +(stack join)
            )),
   fromQuotedFile: fn("Read a file in XML render compatible form, and turn it into a Message.", filename, context: XML,

@@ -1,8 +1,12 @@
 ''(
 `(XML doctype("xml"))
-  xml
+  (xml
     first "(1)"
     second "(2)"
-    (third      a "(3a)"
+    (third
+      a "(3a)"
       b "(3b)"
-      c "(3c)"))
+      (c
+        sub1 "(3c_sub1)"
+        sub2 "(3c_sub2)"
+        ))))
