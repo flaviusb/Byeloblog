@@ -11,35 +11,28 @@ XML = Origin mimic with(
   render:  fn(initial_quoted,
              let(
                  stack,    Array(),
-                 pair?, fn(unreal_arg,
-                   let(arg, unreal_arg asArray [0],
-                     if(arg hasCell("name"),
-                       false,
-                       if(arg hasCell("args"),
-                         if(arg args length ==(3),
-                           arg args [1] name ==("⇒")))))),
-                 keyword?, fn(unreal_arg,
-                   ؟say("Unreal arg: #{print_with_forms(unreal_arg)}")
-                   let(arg, unreal_arg asArray [0],
-                     ؟say("Real-real arg: #{print_with_forms(arg)}")
-                     if(arg hasCell("name"),
-                       false,
-                       if(arg hasCell("args"),
-                         ؟say("Name: #{arg args [0] name}")
-                         ؟say("Matches: #{(arg args [0] name ~= /^.*:$/) asBool asText}")
-                         (arg args [0] name ~= /^.*:$/) asBool,
-                         false)))),
+                 pair?,    fn(arg,  if(arg length ==(3),
+                                      arg [1] name ==("⇒"))),
+                 keyword?, fn(arg, if(arg length ==(2),
+                                      (arg [0] name ~= /^.*:$/) asBool)),
                  render:tag, fn(unreal_tag,
                    tag = unreal_tag asArray [0]
                    ؟say(tag)
                    ؟say(tag name)
                    ؟say(print(tag args))
                    let(
-                     ret, "<#{XML dotify(tag name)}#{tag args map(arg,
-                          cond(
-                            pair?(''(`(arg))),     " #{arg args [0]}=\"#{arg args [2]}\"",
-                            keyword?(''(`(arg))),  " #{arg args [0] name [0 … -2]}=\"#{arg args [1]}\"",
-                                                   "")
+                     ret, "<#{XML dotify(tag name)}#{tag args map(arg_etc,
+                            go = true
+                            let(arg,   arg_etc args flatMap(arg_bit,
+                                         if(go and(eval(unquote(''(Mirror ["pre_scala_mirror"] dot?(`(''(`(arg_bit)))))))),
+                                           Array(),
+                                           go = false
+                                           Array(arg_bit))),
+
+                                cond(
+                                  pair?(arg),     " #{arg [0]}=\"#{arg [2]}\"",
+                                  keyword?(arg),  " #{arg [0] name [0 … -2]}=\"#{arg [1]}\"",
+                                                  ""))
                           ) join}>",
                      stack push!("</#{XML dotify(tag name)}>")
                      ret)
